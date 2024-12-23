@@ -23,7 +23,7 @@
 #include "../../lv_conf_internal.h"
 #if LV_USE_THORVG_INTERNAL
 
-#include <string.h>
+#include <cstring>
 
 #include "tvgInlist.h"
 #include "tvgLoader.h"
