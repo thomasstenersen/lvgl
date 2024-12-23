@@ -27,14 +27,6 @@
 #include <ctype.h>
 #include <string>
 
-#ifdef _WIN32
-    #include <malloc.h>
-#elif defined(__linux__)
-    #include <alloca.h>
-#else
-    #include <stdlib.h>
-#endif
-
 #include "tvgXmlParser.h"
 #include "tvgStr.h"
 
@@ -471,17 +463,20 @@ bool simpleXmlParse(const char* buf, unsigned bufLength, bool strip, simpleXMLCb
 bool simpleXmlParseW3CAttribute(const char* buf, unsigned bufLength, simpleXMLAttributeCb func, const void* data)
 {
     const char* end;
-    char* key;
-    char* val;
     char* next;
 
     if (!buf) return false;
-
     end = buf + bufLength;
-    key = (char*)alloca(end - buf + 1);
-    val = (char*)alloca(end - buf + 1);
-
     if (buf == end) return true;
+
+
+    // Variable length buffer is allocated on the stack frame and destroyed when
+    // the function returns
+    char keybuf[end-buf+1];
+    char valbuf[end-buf+1];
+
+    char *key = keybuf;
+    char *val = valbuf;
 
     do {
         char* sep = (char*)strchr(buf, ':');
