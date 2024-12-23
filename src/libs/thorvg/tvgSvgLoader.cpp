@@ -52,6 +52,7 @@
 */
 
 #include <cstring>
+#include <strings.h>
 #include <fstream>
 #include <float.h>
 #include "tvgLoader.h"
